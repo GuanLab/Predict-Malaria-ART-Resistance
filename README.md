@@ -1,6 +1,9 @@
 # Predict-Malaria-ART-Resistance
-## Train Malaria ART resistance prediction model
+
+Train Malaria ART resistance prediction model
+
 ## Transfer learning between in vivo and in vitro samples
+
 By running
 ```
 python main.py <model_type> 
