@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
+import pickle
 
 def imputation(df):
     """ Missing value imputation.
@@ -80,7 +81,7 @@ def preprocess_in_vitro(df):
     df_new = imputation(df)
     return df_new
 
-def data_preparation(df_invivo, df_invitro):
+def data_preparation(df_invivo, df_invitro, common_genes = None, feature_selection_mode = False):
     """ Preprocess of in vivo and in vitro datasets
     Parameters:
     -----------
@@ -104,7 +105,10 @@ def data_preparation(df_invivo, df_invitro):
     df_invitro = df_invitro.dropna(subset = ['DHA_IC50'])
     
     # find common genes
-    common_genes = sorted(list(set(df_invivo.columns[4:-1])&set(df_invitro.columns[5:-1])))
+    if feature_selection_mode:
+        common_genes = common_genes
+    else:
+        common_genes = sorted(list(set(df_invivo.columns[4:-1])&set(df_invitro.columns[5:-1])))
     print("Shared genes between in vivo and in vitro datasets: ",len(common_genes))
     
     # select common columns; attach four extra informatio columns at front
