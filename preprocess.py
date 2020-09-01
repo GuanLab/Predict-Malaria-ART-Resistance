@@ -105,11 +105,11 @@ def data_preparation(df_invivo, df_invitro, common_genes = None, feature_selecti
     df_invitro = df_invitro.dropna(subset = ['DHA_IC50'])
     
     # find common genes
-    if feature_selection_mode:
+    if common_genes != None:
         common_genes = common_genes
     else:
         common_genes = sorted(list(set(df_invivo.columns[4:-1])&set(df_invitro.columns[5:-1])))
-    print("Shared genes between in vivo and in vitro datasets: ",len(common_genes))
+        print("Shared genes between in vivo and in vitro datasets: ",len(common_genes))
     
     # select common columns; attach four extra informatio columns at front
     df_invivo = df_invivo[['Sample_Names', 'Country', 'Asexual.stage..hpi.', 'Kmeans.Grp']+common_genes+['ClearanceRate']]

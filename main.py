@@ -44,24 +44,29 @@ def leave_one_out_selection(n):
     for g in genes:
         remain = genes.copy()
         remain.remove(g)
-        print("Leave-one-out:", g)
+        print("Leave-one-out:", g, "Remaining:", remain)
         yield(g, remain)
 
 
 def run(train_path, valid_path, model_type, use_top_features, feature_selection_mode):
     
     # load training dataset
-    df_invivo = pd.read_csv(train_path) # in vivo dataset for building the model
+    df_train = pd.read_csv(train_path) # in vivo dataset for building the model
     # load transfering test dataset
-    df_invitro = pd.read_csv(valid_path) # in vitro dataset for transfer testing
+    df_val = pd.read_csv(valid_path) # in vitro dataset for transfer testing
     
     # preprocess both in vivo and in vitro dataset
     if feature_selection_mode:
         for g, genes in leave_one_out_selection(use_top_features):
-            df_invivo, df_invitro = data_preparation(df_invivo, df_invitro, genes, feature_selection_mode)
+            df_invivo, df_invitro = data_preparation(df_train, df_val, genes, feature_selection_mode)
             generate_results(df_invivo, df_invitro, model_type, g+'_')
     else:
-        df_invivo, df_invitro = data_preparation(df_invivo, df_invitro)
+        if use_top_features != None:
+            path = '../downstream_analysis/invivo_top_'+str(use_top_features)+'_genes.pkl'
+            genes = pickle.load(open(path, 'rb'))
+        else:
+            genes = None
+        df_invivo, df_invitro = data_preparation(df_train, df_val, genes)
         generate_results(df_invivo, df_invitro, model_type, '')
 
 def generate_results(df_invivo, df_invitro, model_type, path_affix):
