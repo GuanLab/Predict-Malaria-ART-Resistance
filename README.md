@@ -1,6 +1,6 @@
 # Predict-Malaria-ART-Resistance
 
-Winning algorithem in [2019 Malaria DREAM Challenge SubChallenge 2](https://www.synapse.org/#!Synapse:syn16924919/wiki/583955).
+Winning algorithm in [2019 Malaria DREAM Challenge SubChallenge 2](https://www.synapse.org/#!Synapse:syn16924919/wiki/583955).
 
 ## Transfer learning between in vivo and in vitro samples
 
