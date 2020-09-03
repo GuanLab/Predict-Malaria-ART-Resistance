@@ -31,6 +31,11 @@ def build_in_vivo_model(df_invivo, model_type):
     os.makedirs('./params/', exist_ok = True) # where to save the model params
     kf = KFold(n_splits=10, shuffle = True, random_state = 0)
     eva_df = {'fold':[], 'AUROC':[], 'AUPRC':[], 'Pearsonr':[], 'Spearmanr':[]}
+    eva_conf_df = {'Pearsonr mean[95CI]':[],'Spearmanr mean[95CI]':[],'AUROC mean[95CI]':[], 'AUPRC mean[95CI]':[]}
+    
+    pred_all = []
+    gs_all = []
+    
     for i, (train_idx,test_idx) in enumerate(kf.split(df_invivo)):
         print('Start preparing fold', i, '...')
         path = './invivo/fold_'+str(i)
@@ -65,6 +70,10 @@ def build_in_vivo_model(df_invivo, model_type):
         pred=est.predict(TEST_data.iloc[:,:-1])
         pred = np.array(list(pred))
         gs = np.array(list(TEST_data.iloc[:,-1]))
+        
+        pred_all.extend(list(pred))
+        gs_all.extend(list(gs))
+
         auroc = compute_auroc(pred,gs)
         auprc = compute_auprc(pred,gs)
         spearman_cor, _ = spearmanr(pred,gs)
@@ -77,8 +86,29 @@ def build_in_vivo_model(df_invivo, model_type):
         eva_df['Pearsonr'].append(pearson_cor)
         eva_df['Spearmanr'].append(spearman_cor)
     
+    # Overall confidence analysis from k-fold results
+    ci = 0.95
+            
+    mb, lb, ub = boostrapping_confidence_interval(pred_all, gs_all, pearsonr_cor, ci)
+    print("Mean[%d%sCI] Pearson's correlation is: %.4f[%.4f, %.4f]" % (int(ci*100), '%', mb, lb, ub))
+    eva_conf_df['Pearsonr mean[95CI]'].append("%.4f[%.4f, %.4f]" %(mb, lb, ub))
+            
+    mb, lb, ub = boostrapping_confidence_interval(pred_all, gs_all, spearmanr_cor, ci)
+    print("Mean[%d%sCI] Spearman's correlation is: %.4f[%.4f, %.4f]" % (int(ci*100), '%', mb, lb, ub))
+    eva_conf_df['Spearmanr mean[95CI]'].append("%.4f[%.4f, %.4f]" %(mb, lb, ub))
+            
+    mb, lb, ub = boostrapping_confidence_interval(pred_all, gs_all, compute_auroc, ci)
+    print("Mean[%d%sCI] AUROC is: %.4f[%.4f, %.4f]" % (int(ci*100), '%', mb, lb, ub))
+    eva_conf_df['AUROC mean[95CI]'].append("%.4f[%.4f, %.4f]" %(mb, lb, ub))
+
+    mb, lb, ub = boostrapping_confidence_interval(pred_all, gs_all, compute_auproc, ci)
+    print("Mean[%d%sCI] AUPRC is: %.4f[%.4f, %.4f]" % (int(ci*100), '%', mb, lb, ub))
+    eva_conf_df['AUPRC mean[95CI]'].append("%.4f[%.4f, %.4f]" %(mb, lb, ub))
+
     eva_df = pd.DataFrame.from_dict(eva_df)
-    return eva_df
+    eva_conf_df = pd.DataFrame.from_dict(eva_conf_df)
+
+    return eva_df, eva_conf_df
 
 def transfer_test_on_in_vitro(df_invitro):
     """ Transfer validation on in vitro dataset
@@ -135,18 +165,19 @@ def transfer_test_on_in_vitro(df_invitro):
                 eva_df['Spearmanr'].append(spearman_cor)
                 eva_df['C-index'].append(cidx)
     
-            # Overall confidence analysis from five-fold results
+            # Overall confidence analysis from k-fold results
             ci = 0.95
             
             eva_conf_df['data'].append(data)
+            
             mb, lb, ub = boostrapping_confidence_interval(pred_all, gs_all, pearsonr_cor, ci)
             print("Mean[%d%sCI] Pearson's correlation is: %.4f[%.4f, %.4f]" % (int(ci*100), '%', mb, lb, ub))
-            
             eva_conf_df['Pearsonr mean[95CI]'].append("%.4f[%.4f, %.4f]" %(mb, lb, ub))
+            
             mb, lb, ub = boostrapping_confidence_interval(pred_all, gs_all, spearmanr_cor, ci)
             print("Mean[%d%sCI] Spearman's correlation is: %.4f[%.4f, %.4f]" % (int(ci*100), '%', mb, lb, ub))
-            
             eva_conf_df['Spearmanr mean[95CI]'].append("%.4f[%.4f, %.4f]" %(mb, lb, ub))
+            
             mb, lb, ub = boostrapping_confidence_interval(pred_all, gs_all, c_index, ci)
             print("Mean[%d%sCI] C-idex is: %.4f[%.4f, %.4f]" % (int(ci*100), '%', mb, lb, ub))
             eva_conf_df['C-index mean[95CI]'].append("%.4f[%.4f, %.4f]" %(mb, lb, ub))

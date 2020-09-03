@@ -31,7 +31,7 @@ def train_lighgbm_model(TRAIN):
     params = {
             'boosting_type': 'gbdt',
             'objective': 'regression',
-            'num_leaves': 2,
+            'num_leaves': 5,
             'learning_rate': 0.05,
             'verbose': 0,
             'n_estimators': 800,

@@ -80,7 +80,7 @@ def generate_results(df_invivo, df_invitro, model_type, path_affix):
 
     """
     #Part 1: five fold cross validation on in vivo data
-    eva_cv = build_in_vivo_model(df_invivo, model_type)
+    eva_cv, eva_cv_conf = build_in_vivo_model(df_invivo, model_type)
     # Part 2: transfer testing on in vitro data
     eva_tv, eva_tv_conf = transfer_test_on_in_vitro(df_invitro)
 
@@ -88,6 +88,7 @@ def generate_results(df_invivo, df_invitro, model_type, path_affix):
     path = './'+path_affix+'performance'
     os.makedirs(path, exist_ok = True)
     eva_cv.to_csv(path+'/in_vivo_cv_results.csv', index = False)
+    eva_cv_conf.to_csv(path+'/in_vivo_cv_confidence.csv', index = False)
     eva_tv.to_csv(path+'/in_vitro_tv_results.csv', index = False)
     eva_tv_conf.to_csv(path+'/in_vitro_tv_confidence.csv', index = False)
 
