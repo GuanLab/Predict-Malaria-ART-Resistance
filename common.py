@@ -85,7 +85,7 @@ def build_in_vivo_model(df_invivo, model_type):
         eva_df['AUPRC'].append(auprc)
         eva_df['Pearsonr'].append(pearson_cor)
         eva_df['Spearmanr'].append(spearman_cor)
-    
+
     # Overall confidence analysis from k-fold results
     ci = 0.95
             
@@ -101,7 +101,7 @@ def build_in_vivo_model(df_invivo, model_type):
     print("Mean[%d%sCI] AUROC is: %.4f[%.4f, %.4f]" % (int(ci*100), '%', mb, lb, ub))
     eva_conf_df['AUROC mean[95CI]'].append("%.4f[%.4f, %.4f]" %(mb, lb, ub))
 
-    mb, lb, ub = boostrapping_confidence_interval(pred_all, gs_all, compute_auproc, ci)
+    mb, lb, ub = boostrapping_confidence_interval(pred_all, gs_all, compute_auprc, ci)
     print("Mean[%d%sCI] AUPRC is: %.4f[%.4f, %.4f]" % (int(ci*100), '%', mb, lb, ub))
     eva_conf_df['AUPRC mean[95CI]'].append("%.4f[%.4f, %.4f]" %(mb, lb, ub))
 

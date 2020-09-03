@@ -17,8 +17,8 @@ def spearmanr_cor(pred, label):
 def compute_auroc(pred, label):
     """ Calculate AUROC of predictions in terms of label
     """
-    label = np.array(label)
-    pred = np.array(pred)
+    #label = np.array(label)
+    #pred = np.array(pred)
     fpr, tpr, thresholds = roc_curve(label, pred, pos_label =1)
     auroc = auc(fpr, tpr)
     return auroc
@@ -26,8 +26,8 @@ def compute_auroc(pred, label):
 def compute_auprc(pred, label):
     """ Calculate AUPRC of predictions in terms of label
     """
-    label = np.array(label)
-    pred = np.array(pred)
+    #label = np.array(label)
+    #pred = np.array(pred)
     precision, recall, thresholds = precision_recall_curve(label, pred)
     auprc = auc(recall, precision)
     return auprc

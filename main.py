@@ -12,7 +12,7 @@ def main():
 
     parser.add_argument('--train_path', type = str, help = "path to your training data, in .csv format", default = "../../rawdata/SubCh2_TrainingData.csv")
     parser.add_argument('--valid_path', type = str, help = "path to your transfer validation data, in .csv format", default = "../../rawdata/SubCh1_TrainingData.csv")
-    parser.add_argument('-m','--model_type', type = str, help = "machine learning models to use: lgb, xbg, rf, gpr, lr. default: lgb", default = 'lgb')
+    parser.add_argument('-m','--model_type', type = str, help = "machine learning models to use: lgb, xgb, rf, gpr, lr. default: lgb", default = 'lgb')
     parser.add_argument('-n','--use_top_features', type = int, default = None, help = 'if specified, used top features based on shap analysis (3, 5, 10, 20 or 30); Otherwise, used the whole genome')
     parser.add_argument('--feature_selection_mode', action = "store_true" ,help = "if used, begins leave-one-out feature selection strategy from specified gene set")
 
