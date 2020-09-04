@@ -8,7 +8,7 @@ Transfer learning from in vivo to in vitro samples.
 
 ```
 python main.py [-h] [--train_path TRAIN_PATH] [--valid_path VALID_PATH]
-               [-m MODEL_TYPE] [-n USE_TOP_FEATURES]
+               [-m MODEL_TYPE] [--no_quantile] [-n USE_TOP_FEATURES]
                [--feature_selection_mode]
 
 Pipeline for buidling Malaria Artemisinin resistance in vivo prediction models
@@ -21,11 +21,14 @@ optional arguments:
   --valid_path VALID_PATH
                         path to your transfer validation data, in .csv format
   -m MODEL_TYPE, --model_type MODEL_TYPE
-                        machine learning models to use: lgb, xbg, rf, gpr, lr.
-                        default: lgb
+                        machine learning models to use: lgb: LightGBM, xgb:
+                        XGBoost, rf: Random Forest, gpr: Gaussian Process
+                        Regression, lr: Linear Regression. default: lgb.
+  --no_quantile         if specified, do not use quantile normalization.
   -n USE_TOP_FEATURES, --use_top_features USE_TOP_FEATURES
-                        if specified, used top features based on shap analysis
-                        (3, 5, 10, 20 or 30); Otherwise, used the whole genome
+                        if specified, used top features based on shap
+                        analysis. for example: 3, 5, 10, 20 or 30; Otherwise,
+                        use the whole genome
   --feature_selection_mode
                         if used, begins leave-one-out feature selection
                         strategy from specified gene set

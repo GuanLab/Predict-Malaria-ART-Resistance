@@ -81,7 +81,7 @@ def preprocess_in_vitro(df):
     df_new = imputation(df)
     return df_new
 
-def data_preparation(df_invivo, df_invitro, common_genes = None, feature_selection_mode = False):
+def data_preparation(df_invivo, df_invitro, no_quantile = False, common_genes = None):
     """ Preprocess of in vivo and in vitro datasets
     Parameters:
     -----------
@@ -93,6 +93,10 @@ def data_preparation(df_invivo, df_invitro, common_genes = None, feature_selecti
         in vitro dataset of gene expression levels
         extra columns: 'Sample_Name', 'Isolate', 'Timepoint', 'Treatment', 'BioRep'
         label: 'DHA_IC50'
+    if_quantile: boolean
+        if quantile normalization or not
+    common_genes: list
+        if specified, use common_genes only as feature set. else use the whole genesets shared by both in vivo and in vitro dataset.
     Yields:
     -------
     df_invivo: Pandas Dataframe
@@ -118,6 +122,11 @@ def data_preparation(df_invivo, df_invitro, common_genes = None, feature_selecti
     # preprocess in invo and in vitro datasets respectively since they contain differernt labels
     df_invivo = preprocess_in_vivo(df_invivo)
     df_invitro = preprocess_in_vitro(df_invitro)
-    df_invivo, df_invitro = quantile_normalization(df_invivo, df_invitro)
+    
+    # quantile normalization on both datasets
+    if no_quantile:
+        pass
+    else:
+        df_invivo, df_invitro = quantile_normalization(df_invivo, df_invitro)
     
     return df_invivo, df_invitro
