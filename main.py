@@ -43,7 +43,8 @@ def main():
     if args.feature_selection_mode:
         print("Begin leave-one-out feature selection mode ...")
         assert args.use_top_features != None, "Must specify -n for leave-one-out feature selection mode!"
-
+    if args.no_quantile:
+        print("Do not use normalization ...")
     opts = vars(parser.parse_args())
     
     run(**opts)
