@@ -1,13 +1,15 @@
 import numpy as np
 import pandas as pd
 import sys, os, pickle
-import argparse
+import argparse, textwrap
 from preprocess import data_preparation
 from common import  build_in_vivo_model, transfer_test_on_in_vitro
 
 def main():
     
-    parser = argparse.ArgumentParser(description = 'Pipeline for buidling Malaria Artemisinin resistance in vivo prediction models and transfer learning on in vitro datasets.')
+    parser = argparse.ArgumentParser(description = 'Pipeline for buidling Malaria Artemisinin resistance in vivo prediction models and transfer learning on in vitro datasets.',
+            usage = 'use "python %(prog)s --help" for more information',
+            formatter_class=argparse.RawTextHelpFormatter)
 
     parser.add_argument('--train_path', type = str, 
             help = "path to your training data, in .csv format", 
@@ -16,13 +18,13 @@ def main():
             help = "path to your transfer validation data, in .csv format", 
             default = "../../rawdata/SubCh1_TrainingData.csv")
     parser.add_argument('-m','--model_type', type = str, 
-            help = '''machine learning models to use: 
-            lgb: LightGBM, 
-            xgb: XGBoost,
-            rf: Random Forest, 
-            gpr: Gaussian Process Regression,
-            lr: Linear Regression. 
-            default: lgb.''', 
+            help = '''machine learning models to use:
+            lgb: LightGBM; 
+            xgb: XGBoost;
+            rf: Random Forest; 
+            gpr: Gaussian Process Regression;
+            lr: Linear Regression;
+            default: lgb''', 
             default = 'lgb')
     parser.add_argument('--no_quantile',
             action = "store_true",
