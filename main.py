@@ -87,7 +87,7 @@ def run(train_path, valid_path, model_type, no_quantile, use_top_features, featu
             genes = pickle.load(open(path, 'rb'))
         else:
             genes = None
-        df_invivo, df_invitro = data_preparation(df_train, df_val, if_quantile, genes)
+        df_invivo, df_invitro = data_preparation(df_train, df_val, no_quantile, genes)
         generate_results(df_invivo, df_invitro, model_type, '')
 
 def generate_results(df_invivo, df_invitro, model_type, path_affix):
