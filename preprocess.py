@@ -93,8 +93,8 @@ def data_preparation(df_invivo, df_invitro, no_quantile = False, common_genes = 
         in vitro dataset of gene expression levels
         extra columns: 'Sample_Name', 'Isolate', 'Timepoint', 'Treatment', 'BioRep'
         label: 'DHA_IC50'
-    no_quantile: boolean
-        if true, skip quantile normalization.
+    if_quantile: boolean
+        if quantile normalization or not
     common_genes: list
         if specified, use common_genes only as feature set. else use the whole genesets shared by both in vivo and in vitro dataset.
     Yields:
@@ -109,9 +109,7 @@ def data_preparation(df_invivo, df_invitro, no_quantile = False, common_genes = 
     df_invitro = df_invitro.dropna(subset = ['DHA_IC50'])
     
     # find common genes
-    if common_genes != None:
-        common_genes = common_genes
-    else:
+    if common_genes == None:
         common_genes = sorted(list(set(df_invivo.columns[4:-1])&set(df_invitro.columns[5:-1])))
         print("Shared genes between in vivo and in vitro datasets: ",len(common_genes))
     
