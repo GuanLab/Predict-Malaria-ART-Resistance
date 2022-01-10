@@ -119,9 +119,9 @@ for gsm_name, gsm in gse.gsms.items():
 df_exp= pd.concat(all_exp).reset_index(drop = True)
 df_exp['sample'] = all_title
 df_exp['label'] = all_label
-df_exp.to_csv('in_vitro_GSE61536.tsv')
+df_exp.to_csv('in_vitro_GSE61536.csv')
 
-'''
+"""
 # NOT avaible since it's RNA seq, not microarray
 gse = GEOparse.get_GEO(geo="GSE62132", destdir="./") # PMID: 26490244
 
@@ -165,8 +165,8 @@ for gsm_name, gsm in gse.gsms.items():
 df_exp= pd.concat(all_exp).reset_index(drop = True)
 df_exp['sample'] = all_title
 df_exp['label'] = all_label
-df_exp.to_csv('in_vitro_GSE62132.tsv')
-'''
+df_exp.to_csv('in_vitro_GSE62132.csv')
+"""
 
 # ex vivo
 gse = GEOparse.get_GEO(geo="GSE25878", destdir="./") # PMID: 21810278
@@ -210,7 +210,7 @@ for gsm_name, gsm in gse.gsms.items():
 df_exp= pd.concat(all_exp).reset_index(drop = True)
 df_exp['sample'] = all_title
 df_exp['label'] = all_label
-df_exp.to_csv('ex_vitro_GSE25878.tsv')
+df_exp.to_csv('ex_vitro_GSE25878.csv')
 
 
 # from the same isolates in Mok et al's paper in in vivo training set
@@ -263,7 +263,7 @@ for gsm_name, gsm in gse.gsms.items():
 df_exp= pd.concat(all_exp).reset_index(drop = True)
 df_exp['sample'] = all_title
 df_exp['label'] = all_label
-df_exp.to_csv('ex_vitro_GSE59098.tsv')
+df_exp.to_csv('ex_vitro_GSE59098.csv')
 
 
 
