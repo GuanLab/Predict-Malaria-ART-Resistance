@@ -67,10 +67,10 @@ python getGEO.py
 This will both pull down the soft files from GEO and create `.tsv` files for test.
 
 ```
-ex_vitro_GSE25878.tsv  
-ex_vitro_GSE59098.tsv
-in_vitro_GSE151189.tsv  
-in_vitro_GSE61536.tsv
+ex_vitro_GSE25878.csv  
+ex_vitro_GSE59098.csv
+in_vitro_GSE151189.csv  
+in_vitro_GSE61536.csv
 ```
 
 
