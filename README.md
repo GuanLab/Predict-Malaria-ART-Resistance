@@ -47,3 +47,32 @@ It will generate the following folders:
 
 `./performance/`: model performance in k-fold cross validation and transfering test
 
+## External validation datasets besides DREAM challenges
+
+While our model was designed to be applied on a challenging task to predict ART resistance based on transcripton profiles sample at different conditions (in vivo, in vitro, ex vivo) and different microarray platforms in DREAM challenge, we also tested our model on other independent public datasets for predicting Malaria ART resistance, which is put under `./exteral_data`.
+
+* in vivo: GSE149735 (Zhu et al. 2021) *ps: this data is not included since correct label is not yet available from [paper](https://www.biorxiv.org/content/10.1101/2021.05.17.444396v1)*
+* in vitro: GSE151189 GSE61536 
+* ex vivo: GSE25878 GSE59098
+
+
+first install GEOparse:
+`pip install GEOparse`
+
+then pull down public transcriptomes:
+```
+cd ./exteral_data
+python getGEO.py
+```
+This will both pull down the soft files from GEO and create `.tsv` files for test.
+
+```
+ex_vitro_GSE25878.tsv  
+ex_vitro_GSE59098.tsv
+in_vitro_GSE151189.tsv  
+in_vitro_GSE61536.tsv
+```
+
+
+
+
