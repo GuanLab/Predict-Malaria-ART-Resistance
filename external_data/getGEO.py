@@ -1,10 +1,17 @@
 import GEOparse
 import pandas as pd
-# in vivo: GSE149735 (Zhu et al. 2021) !!correct label is not available from paper
+# in vivo: GSE59099(DREAM training set, Mok et al. 2015); GSE149735 (Zhu et al. 2021) !!correct label is not available from paper
 # in vitro: GSE151189 GSE62132;GSE61536 
 # ex vivo: GSE25878 GSE59098
 
-#gse = GEOparse.get_GEO(geo="GSE149735", destdir="./")
+
+# in vivo
+gse = GEOparse.get_GEO(geo="GSE149735", destdir="./")
+
+gpl_name, gpl = list(gse.gpls.items())[0]
+plt_orf = gpl.table[['ORF', 'ORF_old']].drop_duplicates(subset = None).reset_index(drop = True)
+# map old orf id to new id
+orf_map = {i['ORF_old']:i['ORF'] for _,i in plt_orf.iterrows()}
 
 """
     # GSE149735
@@ -18,6 +25,10 @@ import pandas as pd
     ch1[0]  #sample type/stage: In vivo, Blood stage'
     ch1[1]  #'treatment: Prior to ACT treatment, 0h'
     ch1[2]  #'batch: 17'
+"""
+
+
+
 """
 
 # in vitro
@@ -73,9 +84,11 @@ for gsm_name, gsm in gse.gsms.items():
 df_exp= pd.concat(all_exp).reset_index(drop = True)
 df_exp['sample'] = all_title
 df_exp['label'] = all_label
-df_exp.to_csv('in_vitro_GSE151189.tsv')
+df_exp.to_csv('in_vitro_GSE151189.csv')
 
+"""
 
+#in vitro
 gse = GEOparse.get_GEO(geo="GSE61536", destdir="./") # PMID: 26490244
 
 # platform gse.gpls 
@@ -111,7 +124,7 @@ for gsm_name, gsm in gse.gsms.items():
         print(t)
         exp =gsm.table.rename(columns = {'ID_REF':'ID'})
         # map probe to gene by left join
-        new_exp = exp.merge(plt, on='ID', how =  'left')[['ID', 'ORF', 'VALUE']].groupby('ORF').mean()[['VALUE']].T
+        new_exp = exp.merge(plt, on='ID', how =  'left')[['ID', 'ORF', 'VALUE']].groupby('ORF').mean()[['VALUE']].T.rename(columns= orf_map)
         all_title.append(t)
         all_exp.append(new_exp)
         all_label.append(1)
@@ -203,7 +216,7 @@ for gsm_name, gsm in gse.gsms.items():
 
     exp =gsm.table.rename(columns = {'ID_REF':'ID'})
     # map probe to gene by left join
-    new_exp = exp.merge(plt, on='ID', how =  'left')[['ID', 'ORF', 'VALUE']].groupby('ORF').mean()[['VALUE']].T
+    new_exp = exp.merge(plt, on='ID', how =  'left')[['ID', 'ORF', 'VALUE']].groupby('ORF').mean()[['VALUE']].T.rename(columns= orf_map)
     all_title.append(t)
     all_exp.append(new_exp)
 
